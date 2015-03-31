@@ -1,28 +1,40 @@
 # HashAccessor
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/hash_accessor`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+A simple library to provide hash-backed accessors to your ruby objects.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'hash_accessor'
+gem 'hash_accessor', github: 'carlzulauf/hash_accessor'
 ```
 
 And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install hash_accessor
-
 ## Usage
 
-TODO: Write usage instructions here
+Example:
+
+```ruby
+require "hash_accessor"
+
+class SimpleExample
+  include HashAccessor
+
+  hash_accessor :foo, :yin
+end
+
+example = SimpleExample.new(foo: "bar")
+
+example.foo
+# => "bar"
+
+example.yin
+# => nil
+```
 
 ## Development
 
