@@ -34,6 +34,34 @@ example.foo
 
 example.yin
 # => nil
+
+example.yin = "yang"
+
+example.yin
+# => "yang"
+```
+
+### Assign a hash full of attributes
+
+```ruby
+example = SimpleExample.new(foo: "bar", yin: "yang")
+
+example.assign_hash_attributes(foo: "baz")
+
+[example.foo, example.yin]
+# => ["baz", "yang"]
+```
+
+### Access and assign the hash directly
+
+```ruby
+example.hash_attributes
+# => {foo: "bar", yin: "yang"}
+
+example.hash_attributes = {foo: "baz", yin: "niy"}
+
+[example.foo, example.yin]
+# => ["baz", "niy"]
 ```
 
 ## Development
