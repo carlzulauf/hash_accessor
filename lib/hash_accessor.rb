@@ -2,6 +2,7 @@ require "hash_accessor/version"
 
 module HashAccessor
   def self.included(base)
+    base.send(:attr_accessor, :hash_attributes)
     base.extend(ClassMethods)
   end
 
@@ -26,12 +27,12 @@ module HashAccessor
       class_variable_set(:@@hash_accessors, accessors)
 
       define_method(:initialize) do |*args|
+        self.hash_attributes = {}
         attributes = args.first || {}
         assign_hash_attributes attributes
       end
 
       define_method(:assign_hash_attributes) do |attributes|
-        @hash_attributes ||= {}
         attributes.each_pair do |key, value|
           attribute = key.to_sym
           if self.class.__hash_accessors.member?(attribute)
@@ -47,11 +48,11 @@ module HashAccessor
 
       attribute_names.each do |name|
         define_method(name) do
-          @hash_attributes[name]
+          hash_attributes[name]
         end
 
         define_method("#{name}=") do |value|
-          @hash_attributes[name] = value
+          hash_attributes[name] = value
         end
       end
     end

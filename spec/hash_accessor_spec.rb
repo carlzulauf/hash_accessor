@@ -131,4 +131,11 @@ describe HashAccessor do
       expect(subject.yin).to eq("yang")
     end
   end
+
+  describe "#hash_attributes" do
+    it "should return a hash mapping accessors to values" do
+      example = SimpleExample.new(foo: "bar", yin: "yang")
+      expect(example.hash_attributes).to eq(foo: "bar", yin: "yang")
+    end
+  end
 end
