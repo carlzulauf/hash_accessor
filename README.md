@@ -64,6 +64,8 @@ example.hash_attributes = {foo: "baz", yin: "niy"}
 # => ["baz", "niy"]
 ```
 
+See [`/spec`][spec] folder for additional examples.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `bin/console` for an interactive prompt that will allow you to experiment.
@@ -77,3 +79,5 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
+
+[spec]: https://github.com/carlzulauf/hash_accessor/tree/master/spec
