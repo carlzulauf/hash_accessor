@@ -54,8 +54,8 @@ module HashAccessor
           @hash_attributes[name] = value
         end
       end
-
     end
+    alias_method :hash_accessors, :hash_accessor
 
     def __hash_accessors
       class_variable_get(:@@hash_accessors)
@@ -65,4 +65,5 @@ module HashAccessor
       class_variable_get(:@@hash_accessor_options)
     end
   end
+
 end

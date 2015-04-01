@@ -19,13 +19,19 @@ class ChildExample < ParentExample
   hash_accessor :yin, :yang
 end
 
+class PluralExample
+  include HashAccessor
+  hash_accessors :foo, :yin
+end
+
 describe HashAccessor do
+  let(:attributes) { {foo: "bar", yin: "yang", tea: "time"} }
+
   it 'has a version number' do
     expect(HashAccessor::VERSION).not_to be nil
   end
 
   describe ".hash_accessor" do
-    let(:attributes) { {foo: "bar", yin: "yang", tea: "time"} }
 
     context "with simple class" do
       context "and attributes" do
@@ -115,6 +121,14 @@ describe HashAccessor do
           expect(child.yang).to eq(321)
         end
       end
+    end
+  end
+
+  describe ".hash_accessors" do
+    subject { PluralExample.new(attributes) }
+    it "should behave like .hash_accessor" do
+      expect(subject.foo).to eq("bar")
+      expect(subject.yin).to eq("yang")
     end
   end
 end
