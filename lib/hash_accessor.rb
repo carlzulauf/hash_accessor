@@ -7,20 +7,42 @@ module HashAccessor
 
   module ClassMethods
     def hash_accessor(*attribute_names, **options)
-      strict = options.fetch(:strict) { false }
+      accessor_options = if class_variable_defined?(:@@hash_accessor_options)
+        class_variable_get(:@@hash_accessor_options)
+      else
+        {}
+      end
 
-      define_method(:initialize) do |**attributes|
-        @hash_attributes = attributes
+      accessor_options.merge!(options)
+      class_variable_set(:@@hash_accessor_options, accessor_options)
 
-        if strict
-          invalid = attributes.keys.detect do |key|
-            !attribute_names.member?(key)
-          end
-          if invalid
+      accessors = if class_variable_defined?(:@@hash_accessors)
+        class_variable_get(:@@hash_accessors)
+      else
+        []
+      end
+
+      accessors += attribute_names
+      class_variable_set(:@@hash_accessors, accessors)
+
+      define_method(:initialize) do |*args|
+        attributes = args.first || {}
+        assign_hash_attributes attributes
+      end
+
+      define_method(:assign_hash_attributes) do |attributes|
+        @hash_attributes ||= {}
+        attributes.each_pair do |key, value|
+          attribute = key.to_sym
+          if self.class.__hash_accessors.member?(attribute)
+            send("#{attribute}=", value)
+          elsif self.class.__hash_accessor_options.fetch(:strict) { false }
             raise ArgumentError,
-              "Supplied key '#{invalid.inspect}' is not a valid hash accessor for #{self.inspect}"
+              "Supplied key '#{attribute.inspect}' is not a valid" +
+              " hash accessor for #{self.class.inspect}"
           end
         end
+        self
       end
 
       attribute_names.each do |name|
@@ -33,6 +55,14 @@ module HashAccessor
         end
       end
 
+    end
+
+    def __hash_accessors
+      class_variable_get(:@@hash_accessors)
+    end
+
+    def __hash_accessor_options
+      class_variable_get(:@@hash_accessor_options)
     end
   end
 end
