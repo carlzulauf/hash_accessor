@@ -137,5 +137,10 @@ describe HashAccessor do
       example = SimpleExample.new(foo: "bar", yin: "yang")
       expect(example.hash_attributes).to eq(foo: "bar", yin: "yang")
     end
+
+    it "should retain extra values when not in strict mode" do
+      example = SimpleExample.new(foo: "bar", yin: "yang", pie: "crust")
+      expect(example.hash_attributes[:pie]).to eq("crust")
+    end
   end
 end

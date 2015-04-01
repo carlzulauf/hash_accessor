@@ -41,6 +41,8 @@ module HashAccessor
             raise ArgumentError,
               "Supplied key '#{attribute.inspect}' is not a valid" +
               " hash accessor for #{self.class.inspect}"
+          else
+            hash_attributes[attribute] = value
           end
         end
         self
